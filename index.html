@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Krisna Store - 2388010044</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    /* BACKGROUND BERUBAH KE NUANSA GELAP DENGAN SENTUHAN ORANGE */
+    background: linear-gradient(135deg, #0f172a, #1a1a1a, #451a03);
+    color:#fff;
+    overflow-x:hidden;
+}
+
+/* SCROLLBAR ORANGE */
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#f97316;
+    border-radius:10px;
+}
+
+/* HEADER */
+header{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 20px;
+    position:relative;
+    overflow:hidden;
+}
+
+header::before{
+    content:'';
+    position:absolute;
+    width:500px;
+    height:500px;
+    background:rgba(249, 115, 22, 0.15); /* GLOW ORANGE */
+    border-radius:50%;
+    top:-150px;
+    right:-100px;
+    filter:blur(100px);
+}
+
+header::after{
+    content:'';
+    position:absolute;
+    width:400px;
+    height:400px;
+    background:rgba(234, 88, 12, 0.1); /* GLOW DARK ORANGE */
+    border-radius:50%;
+    bottom:-150px;
+    left:-100px;
+    filter:blur(100px);
+}
+
+.hero{
+    position:relative;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    gap:60px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+/* FOTO KRISNA */
+.profile-image{
+    width:280px;
+    height:280px;
+    border-radius:30px;
+    overflow:hidden;
+    border:4px solid rgba(249, 115, 22, 0.5); /* BORDER ORANGE */
+    box-shadow:
+        0 0 25px rgba(249, 115, 22, 0.4),
+        0 0 50px rgba(0,0,0,0.5);
+    animation:float 4s ease-in-out infinite;
+    transition:0.4s;
+    background: #1e293b;
+}
+
+.profile-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* TEXT */
+.hero-text h1{
+    font-size:3.5rem;
+    line-height:1.2;
+    margin-bottom:15px;
+    font-weight:800;
+    text-transform: uppercase;
+}
+
+.hero-text span{
+    color:#fb923c; /* WARNA ORANGE TERANG */
+    text-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+}
+
+.hero-text p{
+    font-size:1.1rem;
+    color:#cbd5e1;
+    margin-bottom:30px;
+}
+
+.btn{
+    display:inline-block;
+    padding:14px 35px;
+    border-radius:12px;
+    background:linear-gradient(135deg,#f97316,#ea580c); /* GRADIENT ORANGE */
+    color:white;
+    text-decoration:none;
+    font-weight:700;
+    transition:0.3s;
+    box-shadow:0 10px 20px rgba(234, 88, 12, 0.3);
+}
+
+.btn:hover{
+    transform:translateY(-5px);
+    box-shadow:0 15px 30px rgba(249, 115, 22, 0.5);
+}
+
+/* NAV */
+nav{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    backdrop-filter:blur(20px);
+    background:rgba(15, 23, 42, 0.8);
+    border-bottom:2px solid #f97316;
+}
+
+nav ul{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    list-style:none;
+    padding:15px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    font-weight:600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+nav a:hover{
+    color:#fb923c;
+}
+
+/* CARD */
+.card{
+    background:rgba(30, 41, 59, 0.5);
+    border:1px solid rgba(249, 115, 22, 0.2);
+    backdrop-filter:blur(20px);
+    padding:40px;
+    border-radius:20px;
+}
+
+/* SERVICES */
+.service-card{
+    background:rgba(255,255,255,0.03);
+    padding:30px;
+    border-radius:20px;
+    transition:0.4s;
+    border-left: 4px solid #f97316; /* AKSEN GARIS ORANGE */
+}
+
+.service-card:hover{
+    background:rgba(249, 115, 22, 0.1);
+    transform: scale(1.03);
+}
+
+.service-card h3{
+    color:#fb923c;
+}
+
+footer{
+    text-align:center;
+    padding:40px;
+    background:#0a0a0a;
+    border-top: 1px solid #451a03;
+}
+
+@keyframes float{
+    0% { transform:translateY(0px); }
+    50% { transform:translateY(-15px); }
+    100% { transform:translateY(0px); }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="hero">
+        <div class="profile-image">
+            <!-- GANTI POTONYA DI SINI -->
+            <img src="foto-krisna.jpg" alt="Krisna Adilla Fernanda">
+        </div>
+        <div class="hero-text">
+            <h1>KRISNA <span>STORE</span></h1>
+            <p>
+                <b>NIM: 2388010044</b> <br>
+                Solusi Top Up Game Tercepat & Market Akun Game Terpercaya. <br>
+                Dikelola langsung oleh Krisna Adilla Fernanda.
+            </p>
+            <a href="#layanan" class="btn">GAS ORDER SEKARANG</a>
+        </div>
+    </div>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="#tentang">Tentang</a></li>
+        <li><a href="#layanan">Layanan</a></li>
+        <li><a href="#kontak">Kontak</a></li>
+    </ul>
+</nav>
+
+<div class="container" style="width:90%; max-width:1100px; margin:auto;">
+    <section id="tentang" style="padding:80px 0;">
+        <h2 style="text-align:center; margin-bottom:40px; font-size:2.5rem;">ABOUT <span>US</span></h2>
+        <div class="card">
+            <p style="line-height:1.8; text-align:center; font-size:1.1rem;">
+                Krisna Store hadir untuk memenuhi kebutuhan gamers Indonesia. Kami menyediakan layanan 
+                <b>Top Up Diamond Mobile Legends, Free Fire</b>, dan game populer lainnya dengan harga miring. 
+                Selain itu, kami menyediakan market jual-beli akun dengan jaminan keamanan data 100%.
+            </p>
+        </div>
+    </section>
+
+    <section id="layanan" style="padding:80px 0;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px;">
+            <div class="service-card">
+                <h3>💎 TOP UP KILAT</h3>
+                <p>Proses hitungan detik, harga bersaing, open 24 jam.</p>
+            </div>
+            <div class="service-card">
+                <h3>🔥 MARKET AKUN FF</h3>
+                <p>Akun sultan murah meriah, spek dewa, aman dari HB.</p>
+            </div>
+            <div class="service-card">
+                <h3>🎮 AKUN MLBB</h3>
+                <p>Pilihan akun rank Mythic ke atas dengan skin melimpah.</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<footer>
+    <p>© 2026 Krisna Adilla Fernanda | Business Technology</p>
+</footer>
+
+</body>
+</html>
