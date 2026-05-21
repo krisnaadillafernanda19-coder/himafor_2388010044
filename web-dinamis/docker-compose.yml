@@ -33,7 +33,62 @@ services:
       DB_NAME: dbcompro_2388010044
     depends_on:
       - mariadb
+    networks:version: '3.8'
+
+services:
+  # 1. Database Container (MariaDB)
+  mariadb:
+    image: mariadb:11-jammy
+    container_name: digitech-mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: krisna_root_pass
+      MYSQL_DATABASE: dbcompro_2388010044
+      MYSQL_USER: userwebdinamis_2388010044
+      MYSQL_PASSWORD: krisna28
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
     networks:
+      - digitech-network
+
+  # 2. Web App Container (Narik dari Docker Hub baru kamu)
+  nextjs:
+    image: krsnaadllaaa/web-dinamis:latest
+    container_name: digitech-nextjs
+    restart: always
+    environment:
+      DB_HOST: mariadb # Mengarah ke container mariadb di jaringan internal docker
+      DB_PORT: 3306
+      DB_USER: userwebdinamis_2388010044
+      DB_PASSWORD: krisna28
+      DB_NAME: dbcompro_2388010044
+    depends_on:
+      - mariadb
+    networks:
+      - digitech-network
+
+  # 3. Web Server Container (Nginx Reverse Proxy)
+  nginx:
+    image: nginx:alpine
+    container_name: digitech-nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - nextjs
+    networks:
+      - digitech-network
+
+volumes:
+  mariadb_data:
+
+networks:
+  digitech-network:
+    driver: bridge
       - digitech-network
 
   # Service Web Server Nginx (Biar port 80 otomatis mengarah ke port 3000)

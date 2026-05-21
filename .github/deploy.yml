@@ -1,32 +1,26 @@
-name: Deploy Web Static to AWS EC2
+name: Deploy DigiTech App to AWS EC2
+
 on:
   push:
-    branches: [main]
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/krisna_2388010044:latest
+    branches:
+      - main  # Trigger jalan setiap kali push ke branch main
 
-      - name: Deploy to EC2 via SSH and run docker compose
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.AWS_HOST }}
-          username: ${{ secrets.AWS_USERNAME }}
-          key: ${{ secrets.AWS_PRIVATE_KEY }}
-          port: 22
-          script: |
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/krisna_2388010044:latest
-            docker run -d --name krisna_2388010044 -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/krisna_2388010044:latest
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Executing Remote SSH Commands via Password
+      uses: appleboy/ssh-action@master
+      with:
+        host: 47.129.184.46
+        username: ubuntu
+        key: ${{ secrets.EC2_SSH_KEY }} # Private Key .pem kamu disimpan di GitHub Secret
+        script: |
+          cd ~/krisna_projek/web-dinamis
+          git pull origin main
+          sudo docker-compose down
+          sudo docker-compose up --build -d
