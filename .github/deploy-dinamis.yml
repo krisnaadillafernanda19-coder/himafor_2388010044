@@ -1,0 +1,19 @@
+name: Deploy Dinamis
+on:
+  push:
+    paths: ['web-dinamis/**']
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USERNAME }}
+          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          script: |
+            cd /home/ubuntu/himafor_2388010044/web-dinamis
+            docker compose pull
+            docker compose up -d --remove-orphans

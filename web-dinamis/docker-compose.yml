@@ -1,50 +1,27 @@
+version: '3.8'
 services:
+  web-dinamis:
+    image: krisnaadilla19/web-dinamis:latest
+    container_name: container-dinamis
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=db-webdinamis
+      - NEXTAUTH_URL=http://18.141.231.18 
+      - NEXTAUTH_SECRET=krisna28_secret_panjang
+    depends_on:
+      - db-webdinamis
+
   db-webdinamis:
     image: mariadb:lts
     container_name: db-webdinamis
     restart: always
     environment:
-      MARIADB_ROOT_PASSWORD: krisna28
+      MARIADB_ROOT_PASSWORD: root_password_anda
       MARIADB_DATABASE: dbcompro_2388010044
-      MARIADB_USER: userwebdinamis_2388010044
-      MARIADB_PASSWORD: O)2E432krM2OfUXsIV
     volumes:
-      - db_data:/var/lib/mysql
-      # Pastikan file .sql ada di folder 'database' di root folder kamu
-      - ./database:/docker-entrypoint-initdb.d/
-    networks:
-      - uas-network
-
-  container-statis:
-    image: krisnaadilla19/himafor_2388010044:latest
-    container_name: container-statis
-    ports:
-      - "80:80"
-    restart: always
-    networks:
-      - uas-network
-
-  container-dinamis:
-    image: krisnaadilla19/web-dinamis:latest
-    container_name: container-dinamis
-    restart: always
-    depends_on:
-      - db-webdinamis
-    ports:
-      - "3000:3000"
-    environment:
-      DB_USER: userwebdinamis_2388010044
-      DB_PASSWORD: O)2E432krM2OfUXsIV
-      DB_NAME: dbcompro_2388010044
-      DB_HOST: db-webdinamis
-      NEXTAUTH_SECRET: ini-kata-kata-bebas-saja-32-karekter
-      NEXTAUTH_URL: http://18.141.231.18:3000
-    networks:
-      - uas-network
-
-networks:
-  uas-network:
-    driver: bridge
-
+      - db_data_baru:/var/lib/mysql
+      - ./db_data/dbcompro_2388010044.sql:/docker-entrypoint-initdb.d/init.sql:ro
 volumes:
-  db_data:
+  db_data_baru:
