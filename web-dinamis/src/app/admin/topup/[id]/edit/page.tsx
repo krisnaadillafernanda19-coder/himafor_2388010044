@@ -1,5 +1,9 @@
-import { createBerita } from "@/app/actions/berita";
+import { updateBerita } from "@/app/actions/topup";
+import { query } from "@/lib/db";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+
+export const dynamic = "force-dynamic";
 
 const BackIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -12,7 +16,12 @@ const SaveIcon = () => (
   </svg>
 );
 
-export default function CreateBeritaPage() {
+export default async function EditBeritaPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const rows = await query<any>("SELECT * FROM berita WHERE id = ?", [id]);
+  if (!rows || rows.length === 0) notFound();
+  const berita = rows[0];
+
   return (
     <div style={{ maxWidth: "800px" }}>
       <div className="admin-page-header">
@@ -21,15 +30,17 @@ export default function CreateBeritaPage() {
             <BackIcon />
           </Link>
           <div>
-            <div className="admin-page-title">Tulis Berita Baru</div>
-            <div className="admin-page-subtitle">Publikasikan informasi terbaru ke pengunjung website</div>
+            <div className="admin-page-title">Edit Berita</div>
+            <div className="admin-page-subtitle">ID #{id} — Perbarui artikel yang sudah ada</div>
           </div>
         </div>
       </div>
 
       <div className="admin-card" style={{ padding: "32px" }}>
-        <form action={createBerita}>
-          {/* Publish toggle */}
+        <form action={async (formData) => {
+          "use server";
+          await updateBerita(Number(id), formData);
+        }}>
           <div style={{
             display: "flex", justifyContent: "space-between", alignItems: "center",
             padding: "16px 20px", background: "#f8fafc", borderRadius: "12px",
@@ -37,42 +48,41 @@ export default function CreateBeritaPage() {
           }}>
             <div>
               <div style={{ fontWeight: 600, fontSize: "14px", color: "#1e293b" }}>Status Publikasi</div>
-              <div style={{ fontSize: "12px", color: "#64748b", marginTop: "2px" }}>Aktifkan agar berita langsung tampil ke publik</div>
+              <div style={{ fontSize: "12px", color: "#64748b", marginTop: "2px" }}>Aktifkan agar berita tampil ke publik</div>
             </div>
             <label style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer" }}>
-              <input type="checkbox" name="is_published" defaultChecked style={{ width: "18px", height: "18px", accentColor: "#2563eb", cursor: "pointer" }} />
+              <input type="checkbox" name="is_published" defaultChecked={berita.is_published === 1}
+                style={{ width: "18px", height: "18px", accentColor: "#2563eb", cursor: "pointer" }} />
               <span style={{ fontSize: "13px", fontWeight: 600, color: "#374151" }}>Published</span>
             </label>
           </div>
 
           <div className="admin-form-group">
             <label className="admin-form-label">Judul Berita <span style={{ color: "#ef4444" }}>*</span></label>
-            <input name="judul" required type="text" className="admin-form-input" placeholder="Contoh: DigiTech Merilis Layanan AI Terbaru" />
+            <input name="judul" required type="text" className="admin-form-input" defaultValue={berita.judul} />
           </div>
 
           <div className="admin-form-group">
             <label className="admin-form-label">URL Gambar Thumbnail</label>
-            <input name="image" type="url" className="admin-form-input" placeholder="https://images.unsplash.com/photo-xxx?w=800" />
-            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Gunakan link gambar dari Unsplash, ImgBB, atau hosting lainnya.</div>
+            <input name="image" type="text" className="admin-form-input" defaultValue={berita.image || ""} placeholder="https://..." />
           </div>
 
           <div className="admin-form-group">
             <label className="admin-form-label">Kutipan / Excerpt <span style={{ color: "#ef4444" }}>*</span></label>
             <textarea name="excerpt" required className="admin-form-textarea" style={{ minHeight: "80px" }}
-              placeholder="Ringkasan singkat berita (maks. 400 karakter)..." />
+              defaultValue={berita.excerpt} />
           </div>
 
           <div className="admin-form-group">
             <label className="admin-form-label">Konten Artikel (HTML) <span style={{ color: "#ef4444" }}>*</span></label>
             <textarea name="konten" required className="admin-form-textarea" style={{ minHeight: "260px", fontFamily: "monospace", fontSize: "13px" }}
-              placeholder={"<p>Isi artikel lengkap di sini...</p>\n<p>Gunakan tag HTML seperti <strong>, <em>, <ul>, dll.</p>"} />
-            <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Gunakan tag HTML untuk format teks (paragraf, bold, list, dll.)</div>
+              defaultValue={berita.konten} />
           </div>
 
           <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", paddingTop: "8px", borderTop: "1px solid #f1f5f9" }}>
             <Link href="/admin/berita" className="admin-btn admin-btn-secondary">Batal</Link>
             <button type="submit" className="admin-btn admin-btn-primary">
-              <SaveIcon /> Simpan Berita
+              <SaveIcon /> Simpan Perubahan
             </button>
           </div>
         </form>

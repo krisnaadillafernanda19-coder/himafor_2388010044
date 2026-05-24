@@ -1,6 +1,6 @@
 import { query } from "@/lib/db";
 import Link from "next/link";
-import { deleteBerita, togglePublishBerita } from "@/app/actions/berita";
+import { deleteBerita, togglePublishBerita } from "@/app/actions/topup";
 import DeleteButton from "@/components/DeleteButton";
 
 export const dynamic = "force-dynamic";

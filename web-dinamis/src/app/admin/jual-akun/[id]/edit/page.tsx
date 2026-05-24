@@ -1,5 +1,9 @@
-import { createLayanan } from "@/app/actions/layanan";
+import { updateLayanan } from "@/app/actions/jual-akun";
+import { query } from "@/lib/db";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+
+export const dynamic = "force-dynamic";
 
 const BackIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -14,52 +18,58 @@ const SaveIcon = () => (
 
 const ICONS = ["code", "brain", "cloud", "shield", "layers", "bar-chart", "git-merge", "database", "globe", "zap", "cpu", "lock"];
 
-export default function CreateLayananPage() {
+export default async function EditLayananPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const rows = await query<any>("SELECT * FROM layanan WHERE id = ?", [id]);
+  if (!rows || rows.length === 0) notFound();
+  const layanan = rows[0];
+
   return (
     <div style={{ maxWidth: "700px" }}>
       <div className="admin-page-header">
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <Link href="/admin/layanan" className="admin-btn admin-btn-icon"><BackIcon /></Link>
           <div>
-            <div className="admin-page-title">Tambah Layanan Baru</div>
-            <div className="admin-page-subtitle">Tambahkan layanan baru ke halaman company profile</div>
+            <div className="admin-page-title">Edit Layanan</div>
+            <div className="admin-page-subtitle">ID #{id} — Perbarui informasi layanan</div>
           </div>
         </div>
       </div>
 
       <div className="admin-card" style={{ padding: "32px" }}>
-        <form action={createLayanan}>
+        <form action={async (formData) => {
+          "use server";
+          await updateLayanan(Number(id), formData);
+        }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
             <div className="admin-form-group" style={{ gridColumn: "1 / -1" }}>
               <label className="admin-form-label">Nama Layanan <span style={{ color: "#ef4444" }}>*</span></label>
-              <input name="nama" required type="text" className="admin-form-input" placeholder="Contoh: Cloud Enterprise" />
+              <input name="nama" required type="text" className="admin-form-input" defaultValue={layanan.nama} />
             </div>
 
             <div className="admin-form-group">
               <label className="admin-form-label">Icon</label>
-              <select name="icon" className="admin-form-input" style={{ cursor: "pointer" }}>
+              <select name="icon" className="admin-form-input" style={{ cursor: "pointer" }} defaultValue={layanan.icon}>
                 {ICONS.map(ic => <option key={ic} value={ic}>{ic}</option>)}
               </select>
-              <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Gunakan nama icon dari Lucide Icons</div>
             </div>
 
             <div className="admin-form-group">
               <label className="admin-form-label">Urutan Tampil</label>
-              <input name="urutan" type="number" className="admin-form-input" defaultValue="0" min="0" />
-              <div style={{ fontSize: "12px", color: "#94a3b8", marginTop: "4px" }}>Angka kecil = tampil lebih awal</div>
+              <input name="urutan" type="number" className="admin-form-input" defaultValue={layanan.urutan} min="0" />
             </div>
           </div>
 
           <div className="admin-form-group">
             <label className="admin-form-label">Deskripsi <span style={{ color: "#ef4444" }}>*</span></label>
             <textarea name="deskripsi" required className="admin-form-textarea" style={{ minHeight: "120px" }}
-              placeholder="Jelaskan layanan ini secara singkat dan menarik..." />
+              defaultValue={layanan.deskripsi} />
           </div>
 
           <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", paddingTop: "8px", borderTop: "1px solid #f1f5f9" }}>
             <Link href="/admin/layanan" className="admin-btn admin-btn-secondary">Batal</Link>
             <button type="submit" className="admin-btn admin-btn-primary">
-              <SaveIcon /> Simpan Layanan
+              <SaveIcon /> Simpan Perubahan
             </button>
           </div>
         </form>

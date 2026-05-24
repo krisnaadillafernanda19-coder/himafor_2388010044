@@ -1,6 +1,6 @@
 import { query } from "@/lib/db";
 import Link from "next/link";
-import { deleteLayanan } from "@/app/actions/layanan";
+import { deleteLayanan } from "@/app/actions/jual-akun";
 import DeleteButton from "@/components/DeleteButton";
 
 export const dynamic = "force-dynamic";
