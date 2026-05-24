@@ -1,113 +1,50 @@
-version: '3.8'
-
 services:
-  # Service Database
-  mariadb:
-    image: mariadb:11-jammy
-    container_name: digitech-mariadb
+  db-webdinamis:
+    image: mariadb:lts
+    container_name: db-webdinamis
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: krisna_root_pass
-      MYSQL_DATABASE: dbcompro_2388010044
-      MYSQL_USER: userwebdinamis_2388010044
-      MYSQL_PASSWORD: krisna28
-    ports:
-      - "3306:3306"
+      MARIADB_ROOT_PASSWORD: krisna28
+      MARIADB_DATABASE: dbcompro_2388010044
+      MARIADB_USER: userwebdinamis_2388010044
+      MARIADB_PASSWORD: O)2E432krM2OfUXsIV
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - db_data:/var/lib/mysql
+      # Pastikan file .sql ada di folder 'database' di root folder kamu
+      - ./database:/docker-entrypoint-initdb.d/
     networks:
-      - digitech-network
+      - uas-network
 
-  # Service Aplikasi Next.js
-  nextjs:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: digitech-nextjs
-    restart: always
-    environment:
-      DB_HOST: mariadb  # Pakai nama service internal Docker, bukan 127.0.0.1!
-      DB_PORT: 3306
-      DB_USER: userwebdinamis_2388010044
-      DB_PASSWORD: krisna28
-      DB_NAME: dbcompro_2388010044
-    depends_on:
-      - mariadb
-    networks:version: '3.8'
-
-services:
-  # 1. Database Container (MariaDB)
-  mariadb:
-    image: mariadb:11-jammy
-    container_name: digitech-mariadb
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: krisna_root_pass
-      MYSQL_DATABASE: dbcompro_2388010044
-      MYSQL_USER: userwebdinamis_2388010044
-      MYSQL_PASSWORD: krisna28
-    ports:
-      - "3306:3306"
-    volumes:
-      - mariadb_data:/var/lib/mysql
-    networks:
-      - digitech-network
-
-  # 2. Web App Container (Narik dari Docker Hub baru kamu)
-  nextjs:
-    image: krsnaadllaaa/web-dinamis:latest
-    container_name: digitech-nextjs
-    restart: always
-    environment:
-      DB_HOST: mariadb # Mengarah ke container mariadb di jaringan internal docker
-      DB_PORT: 3306
-      DB_USER: userwebdinamis_2388010044
-      DB_PASSWORD: krisna28
-      DB_NAME: dbcompro_2388010044
-    depends_on:
-      - mariadb
-    networks:
-      - digitech-network
-
-  # 3. Web Server Container (Nginx Reverse Proxy)
-  nginx:
-    image: nginx:alpine
-    container_name: digitech-nginx
-    restart: always
+  container-statis:
+    image: mohamadfirdaus12/himafor_2388010044:latest
+    container_name: container-statis
     ports:
       - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - nextjs
-    networks:
-      - digitech-network
-
-volumes:
-  mariadb_data:
-
-networks:
-  digitech-network:
-    driver: bridge
-      - digitech-network
-
-  # Service Web Server Nginx (Biar port 80 otomatis mengarah ke port 3000)
-  nginx:
-    image: nginx:alpine
-    container_name: digitech-nginx
     restart: always
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - nextjs
     networks:
-      - digitech-network
+      - uas-network
 
-volumes:
-  mariadb_data:
+  container-dinamis:
+    image: krsnaadlaaa/web-dinamis:latest
+    container_name: container-dinamis
+    restart: always
+    depends_on:
+      - db-webdinamis
+    ports:
+      - "3000:3000"
+    environment:
+      DB_USER: userwebdinamis_2388010044
+      DB_PASSWORD: O)2E432krM2OfUXsIV
+      DB_NAME: dbcompro_2388010044
+      DB_HOST: db-webdinamis
+      NEXTAUTH_SECRET: ini-kata-kata-bebas-saja-32-karekter
+      NEXTAUTH_URL: http://47.129.160.20:3000
+    networks:
+      - uas-network
 
 networks:
-  digitech-network:
+  uas-network:
     driver: bridge
+
+volumes:
+  db_data:

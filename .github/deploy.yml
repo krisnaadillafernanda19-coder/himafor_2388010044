@@ -1,26 +1,17 @@
-name: Deploy DigiTech App to AWS EC2
-
 on:
   push:
-    branches:
-      - main  # Trigger jalan setiap kali push ke branch main
+    branches: [ main ]
+    paths:
+      - 'web-dinamis/**'
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Executing Remote SSH Commands via Password
-      uses: appleboy/ssh-action@master
-      with:
-        host: 47.129.184.46
-        username: ubuntu
-        key: ${{ secrets.EC2_SSH_KEY }} # Private Key .pem kamu disimpan di GitHub Secret
-        script: |
-          cd ~/krisna_projek/web-dinamis
-          git pull origin main
-          sudo docker-compose down
-          sudo docker-compose up --build -d
+      - name: Build dan Push Image
+        # Pastikan path build diarahkan ke subfolder web-dinamis
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/web-dinamis:latest ./web-dinamis
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/web-dinamis:latest
