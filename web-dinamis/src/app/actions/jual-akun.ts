@@ -4,40 +4,41 @@ import { query } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export async function createLayanan(formData: FormData) {
-  const nama = formData.get("nama") as string;
-  const icon = formData.get("icon") as string || "code";
+export async function createJualAkun(formData: FormData) {
+  const nama_game = formData.get("nama_game") as string;
+  const level = formData.get("level") as string;
+  const harga = Number(formData.get("harga")) || 0;
   const deskripsi = formData.get("deskripsi") as string;
-  const urutan = Number(formData.get("urutan")) || 0;
 
+  // Pastikan nama tabel di database kamu nanti adalah 'jual_akun'
   await query(
-    "INSERT INTO layanan (nama, icon, deskripsi, urutan) VALUES (?, ?, ?, ?)",
-    [nama, icon, deskripsi, urutan]
+    "INSERT INTO jual_akun (nama_game, level, harga, deskripsi) VALUES (?, ?, ?, ?)",
+    [nama_game, level, harga, deskripsi]
   );
 
-  revalidatePath("/admin/layanan");
+  revalidatePath("/admin/jual-akun");
   revalidatePath("/");
-  redirect("/admin/layanan");
+  redirect("/admin/jual-akun");
 }
 
-export async function updateLayanan(id: number, formData: FormData) {
-  const nama = formData.get("nama") as string;
-  const icon = formData.get("icon") as string || "code";
+export async function updateJualAkun(id: number, formData: FormData) {
+  const nama_game = formData.get("nama_game") as string;
+  const level = formData.get("level") as string;
+  const harga = Number(formData.get("harga")) || 0;
   const deskripsi = formData.get("deskripsi") as string;
-  const urutan = Number(formData.get("urutan")) || 0;
 
   await query(
-    "UPDATE layanan SET nama = ?, icon = ?, deskripsi = ?, urutan = ? WHERE id = ?",
-    [nama, icon, deskripsi, urutan, id]
+    "UPDATE jual_akun SET nama_game = ?, level = ?, harga = ?, deskripsi = ? WHERE id = ?",
+    [nama_game, level, harga, deskripsi, id]
   );
 
-  revalidatePath("/admin/layanan");
+  revalidatePath("/admin/jual-akun");
   revalidatePath("/");
-  redirect("/admin/layanan");
+  redirect("/admin/jual-akun");
 }
 
-export async function deleteLayanan(id: number) {
-  await query("DELETE FROM layanan WHERE id = ?", [id]);
-  revalidatePath("/admin/layanan");
+export async function deleteJualAkun(id: number) {
+  await query("DELETE FROM jual_akun WHERE id = ?", [id]);
+  revalidatePath("/admin/jual-akun");
   revalidatePath("/");
 }

@@ -4,6 +4,14 @@
   --accent-orange: #ff8c00;
 }
 
+.admin-input {
+  padding: 10px;
+  border: 1px solid #333;
+  background: #1e1e1e;
+  color: white;
+  border-radius: 5px;
+}
+
 body {
   background-color: var(--bg-dark);
   color: var(--text-light);
