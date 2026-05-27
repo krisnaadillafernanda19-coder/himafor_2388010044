@@ -31,6 +31,7 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ubuntu
           key: ${{ secrets.AWS_SSH_KEY }}
+          port: 22
           script: |
             cd ~/himafor_2388010044
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/web-dinamis:latest
