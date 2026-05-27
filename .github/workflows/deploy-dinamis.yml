@@ -10,6 +10,8 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -33,7 +35,7 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ubuntu
           port: 22
-          key: ${{ secrets.AWS_SSH_KEY }}
+          key: ${{ env.AWS_SSH_KEY }}
           script: |
             # Masuk ke direktori proyek di server
             cd ~/himafor_2388010044
