@@ -28,10 +28,11 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/web-dinamis:latest
 
       - name: Deploy ke AWS EC2 via SSH
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.AWS_HOST }}
           username: ubuntu
+          port: 22
           key: ${{ secrets.AWS_SSH_KEY }}
           script: |
             # Masuk ke direktori proyek di server
