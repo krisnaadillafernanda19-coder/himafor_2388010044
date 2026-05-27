@@ -1,5 +1,21 @@
 version: '3.8'
+
 services:
+  # Hanya gunakan satu service database
+  db-webdinamis:
+    image: mariadb:latest
+    container_name: db-webdinamis
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: krisna28
+      MARIADB_DATABASE: dbcompro_2388010044
+    volumes:
+      - db_data_baru:/var/lib/mysql
+      # Pastikan file SQL di path ini ada dan benar
+      - ./web-dinamis/database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - app-network
+
   web-dinamis:
     image: krisnaadilla19/web-dinamis:latest
     container_name: container-dinamis
@@ -7,21 +23,18 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DB_HOST=db-webdinamis
-      - NEXTAUTH_URL=http://18.141.231.18 
-      - NEXTAUTH_SECRET=krisna28_secret_panjang
+      DB_HOST: db-webdinamis # Sesuai dengan nama service database
+      DB_PASSWORD: krisna28
+      NEXTAUTH_URL: http://18.141.231.18 
+      NEXTAUTH_SECRET: krisna28
     depends_on:
       - db-webdinamis
+    networks:
+      - app-network
 
-  db-webdinamis:
-    image: mariadb:lts
-    container_name: db-webdinamis
-    restart: always
-    environment:
-      MARIADB_ROOT_PASSWORD: root_password_anda
-      MARIADB_DATABASE: dbcompro_2388010044
-    volumes:
-      - db_data_baru:/var/lib/mysql
-      - ./db_data/dbcompro_2388010044.sql:/docker-entrypoint-initdb.d/init.sql:ro
+networks:
+  app-network:
+    driver: bridge
+
 volumes:
   db_data_baru:
