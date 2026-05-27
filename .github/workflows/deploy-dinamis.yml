@@ -5,13 +5,11 @@ on:
     branches:
       - main
     paths:
-      - 'web-dinamis/**' # Sangat penting untuk efisiensi pipeline (Bobot 20%)
+      - 'web-dinamis/**'
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-      AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -24,9 +22,7 @@ jobs:
 
       - name: Build dan Push Image
         run: |
-          # Build image dengan tag terbaru
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/web-dinamis:latest ./web-dinamis
-          # Push ke Docker Hub agar bisa ditarik oleh AWS
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/web-dinamis:latest
 
       - name: Deploy ke AWS EC2 via SSH
@@ -35,16 +31,9 @@ jobs:
           host: ${{ secrets.AWS_HOST }}
           username: ubuntu
           port: 22
-          key: ${{ env.AWS_SSH_KEY }}
+          key: ${{ secrets.AWS_SSH_KEY }}
           script: |
-            # Masuk ke direktori proyek di server
             cd ~/himafor_2388010044
-            
-            # Pull image versi terbaru
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/web-dinamis:latest
-            
-            # Re-deploy kontainer (otomatis mengganti yang lama)
             docker-compose up -d --force-recreate
-            
-            # Membersihkan sisa image lama agar disk tidak penuh
             docker image prune -f
