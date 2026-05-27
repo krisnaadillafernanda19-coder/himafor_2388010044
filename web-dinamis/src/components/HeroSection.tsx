@@ -23,19 +23,18 @@ export default function HeroSection() {
       <div className="floating-accent" style={{ top: "20%", left: "10%" }} />
       <div className="floating-accent floating-accent--alt" style={{ bottom: "10%", right: "15%" }} />
 
-      <span className="hero-tagline">Architecting the Digital Realm</span>
+      <span className="hero-tagline">Platform Jual Beli Akun &amp; Top Up Diamond</span>
       <h1 className="hero-title">
         MEMBANGUN MASA DEPAN GEMILANG
         <br />
         <span className="hero-title--gradient">DENGAN TEKNOLOGI</span>
       </h1>
       <p className="hero-description">
-        DigiTech menghadirkan solusi visioner melampaui batas imajinasi. Kami
-        adalah partner strategis Anda dalam akselerasi transformasi digital
-        global.
+        Krisna Store menyediakan layanan jual beli akun dan top up diamond
+        terpercaya untuk para gamers Indonesia. Nikmati layanan aman dan cepat.
       </p>
       <a href="#services" className="cta-button">
-        JELAJAHI SOLUSI
+        LIHAT PRODUK
       </a>
     </section>
   );

@@ -30,7 +30,7 @@ export default async function AdminDashboard() {
           Selamat Datang 👋
         </h2>
         <p style={{ color: "#64748b", fontSize: "14px" }}>
-          Berikut adalah ringkasan konten website DigiTech Anda.
+          Berikut adalah ringkasan konten website Krisna Store Anda.
         </p>
       </div>
 

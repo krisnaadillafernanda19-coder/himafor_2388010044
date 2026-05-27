@@ -32,7 +32,7 @@ export default function BeritaSection() {
         Berita <span className="text-gradient">Terbaru</span>
       </h2>
       <p className="section-subtitle">
-        Update terkini dari dunia teknologi dan inovasi DigiTech
+        Update terkini seputar promo dan info produk Krisna Store
       </p>
 
       {loading ? (

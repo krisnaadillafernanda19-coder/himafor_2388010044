@@ -47,7 +47,7 @@ export default function CreateBeritaPage() {
 
           <div className="admin-form-group">
             <label className="admin-form-label">Judul Berita <span style={{ color: "#ef4444" }}>*</span></label>
-            <input name="judul" required type="text" className="admin-form-input" placeholder="Contoh: DigiTech Merilis Layanan AI Terbaru" />
+            <input name="judul" required type="text" className="admin-form-input" placeholder="Contoh: Promo Diskon Top Up 50% di Krisna Store" />
           </div>
 
           <div className="admin-form-group">

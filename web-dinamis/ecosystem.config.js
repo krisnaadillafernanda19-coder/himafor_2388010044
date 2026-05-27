@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "digitech-web",
+      name: "krisna-store-web",
       script: "server.js",
       cwd: "./.next/standalone",
       instances: "max", // Atau jumlah core yang diinginkan, misal: 2
