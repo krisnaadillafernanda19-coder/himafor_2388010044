@@ -15,7 +15,11 @@
 body {
   background-color: var(--bg-dark);
   color: var(--text-light);
-  font-family: sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.45;
+  margin: 0;
 }
 
 /* Style untuk tombol dan kartu */
@@ -26,6 +30,13 @@ body {
   border-radius: 8px;
   font-weight: bold;
   text-decoration: none;
+  box-shadow: 0 6px 18px rgba(255,140,0,0.12);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.btn-orange:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255,140,0,0.18);
 }
 
 .card-store {
@@ -33,4 +44,73 @@ body {
   border: 1px solid var(--accent-orange);
   padding: 20px;
   border-radius: 12px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+/* Layout helpers */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* Navbar */
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+}
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: var(--text-light);
+}
+
+/* Hero */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  align-items: center;
+  padding: 48px 0;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  margin: 0 0 12px 0;
+}
+.hero p { color: #d6d6d6; margin: 0 0 18px 0; }
+
+/* Product grid */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+  gap: 18px;
+}
+.product-card {
+  background: linear-gradient(180deg,#171717,#1e1e1e);
+  border-radius: 12px;
+  padding: 16px;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+.product-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+.product-title { font-weight: 600; margin: 8px 0; }
+.product-price { color: var(--accent-orange); font-weight: 700; }
+
+/* Footer */
+.site-footer { padding: 32px 0; border-top: 1px solid rgba(255,255,255,0.03); color:#cfcfcf; }
+
+/* Responsive tweaks */
+@media (min-width: 800px) {
+  .hero { grid-template-columns: 1fr 420px; }
+  .hero h1 { font-size: 3rem; }
+}
+
+@media (max-width: 480px) {
+  .btn-orange { padding: 10px 14px; }
+  .container { padding: 16px; }
 }
