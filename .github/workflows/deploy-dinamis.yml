@@ -30,13 +30,9 @@ jobs:
         with:
           host: ${{ secrets.AWS_HOST }}
           username: ubuntu
-          port: 22
           key: ${{ secrets.AWS_SSH_KEY }}
           script: |
             cd ~/himafor_2388010044
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/web-dinamis:latest
             docker-compose up -d --force-recreate
             docker image prune -f
-
-
-#hai
