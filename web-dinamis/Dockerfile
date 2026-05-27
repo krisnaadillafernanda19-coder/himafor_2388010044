@@ -21,8 +21,10 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
+RUN addgroup -S itsnode && adduser -S itsuser -G itsnode
+USER itsuser
 RUN addgroup -g 1001 -S itsnode
-RUN itsuser -u 1001 -S itsnode -G itsnode
+RUN adduser -u 1001 -S itsnode -G itsnode
 
 # PENTING: Salin aset publik agar CSS tidak hilang!
 COPY --from=builder /app/public ./public
